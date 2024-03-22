@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 function Message() {
-  const message = [
+  const [star, setStar] = useState([
     {
       id: 1,
       img: "./src/Images/ppl1.jpg",
@@ -71,8 +71,15 @@ function Message() {
       date: "13 July",
       like: true,
     },
-  ];
-  const [starActive, setStarActive] = useState(false);
+  ]);
+
+  const toggleLike = (id) => {
+    setStar((e) =>
+      e.map((check) =>
+        check.id === id ? { ...check, like: !check.like } : check
+      )
+    );
+  };
 
   return (
     <>
@@ -81,28 +88,32 @@ function Message() {
           <p className="font-semibold">Client Message</p>
           <p className="px-10 font-bold text-xl pb-2">...</p>
         </div>
-        {message.map((i) => (
-          <div className="w-full" key={i.id}>
+        {star.map((msg) => (
+          <div className="w-full" key={msg.id}>
             <div className="border-t-2 border-gray-200 p-4 flex">
               <img
-                src={i.img}
+                src={msg.img}
                 alt=""
                 className="size-14 rounded-full mr-5 mt-2"
               />
               <div className="w-full">
                 <div className="flex items-center justify-between w-full">
-                  <p className="font-semibold">{i.name}</p>
+                  <p className="font-semibold">{msg.name}</p>
                   <i
                     className={
-                      i.like
+                      msg.like
                         ? "bx bxs-star pr-6 cursor-pointer"
                         : "bx bx-star pr-6 cursor-pointer"
                     }
-                    onClick={() => setStarActive(!starActive)}
+                    onClick={() => toggleLike(msg.id)}
                   ></i>
                 </div>
-                <p className="w-[95%] text-[13px] text-gray-500">{i.message}</p>
-                <p className="text-sm text-gray-400 text-end pr-6">{i.date}</p>
+                <p className="w-[95%] text-[13px] text-gray-500">
+                  {msg.message}
+                </p>
+                <p className="text-sm text-gray-400 text-end pr-6">
+                  {msg.date}
+                </p>
               </div>
             </div>
           </div>
